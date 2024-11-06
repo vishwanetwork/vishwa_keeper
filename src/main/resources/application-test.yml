@@ -1,0 +1,52 @@
+#
+spring:
+  profiles:
+    include: mybatis-test
+  datasource:
+    oms.url: jdbc:mysql://tdnc-test.co42pkai1ubt.ap-northeast-2.rds.amazonaws.com:3306/gta?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    oms.username: admin
+    oms.password: Ddis#is2#is38iD98s08
+    oms.type: com.alibaba.druid.pool.DruidDataSource
+    #
+    oms.initialSize: 5
+    oms.minIdle: 5
+    oms.maxActive: 20
+    oms.maxWait: 60000
+    oms.timeBetweenEvictionRunsMillis: 60000
+    oms.minEvictableIdleTimeMillis: 300000
+    oms.validationQuery: SELECT 1 FROM DUAL
+    oms.testWhileIdle: true
+    oms.testOnBorrow: false
+    oms.testOnReturn: false
+    oms.poolPreparedStatements: true
+    #   filters，sql，'wall'
+    oms.filters: stat,wall
+    #    ,log4j
+    oms.maxPoolPreparedStatementPerConnectionSize: 20
+    oms.useGlobalDataSourceStat: true
+    oms.connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  redis:
+    host: tdnc-test.g1oewh.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
+    password:
+    database: 10
+
+app:
+  web3j: 
+    address: https://rpc.truescan.network/
+    chainId: 18928
+    tdfAddress: "0xd22271C5b5e7D8aCdb8843DFC9400D6404D401CB"
+    tdfBlock: "tdfBlock"
+    monitorAddress: "0xB9093CDae95b36d293999FF7Bf43259957aD3876"
+#    keyStorePath: /home/java/gravity/liuyang-btrue.keystore
+    keyStorePath: d:\keystore.json
+
+  taskConfig:
+    dividend: 1
+    cashout: 1
+    cashoutEnd: 1
+    transaction: 1
+    price: 1
+    config: 1
+  icon:
+    path: "https://file.goldentreearea.com/images/"

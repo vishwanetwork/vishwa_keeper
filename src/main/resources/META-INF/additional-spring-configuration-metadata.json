@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.datasource.type.druid.time-between-eviction-runs-millis",
+      "type": "java.lang.String",
+      "description": "Description for spring.datasource.type.druid.time-between-eviction-runs-millis."
+  }
+] }
