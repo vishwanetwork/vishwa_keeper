@@ -113,10 +113,8 @@ public class StellarUtils {
         try {
             runCmd(true, "1000");
             runCmd(false, "1000");
-        } catch (SorobanRpcErrorResponse sorobanRpcErrorResponse) {
+        } catch (SorobanRpcErrorResponse | IOException sorobanRpcErrorResponse) {
             sorobanRpcErrorResponse.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
