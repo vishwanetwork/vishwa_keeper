@@ -44,6 +44,8 @@ public class BtcUtils3 {
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 return JSONObject.parseObject(response.body().string());
+            }else{
+                System.out.println(response.toString());
             }
         } catch (Exception e) {
             System.err.println("Error fetching transaction: " + e.getMessage());
@@ -74,13 +76,16 @@ public class BtcUtils3 {
             CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                 try {
                     JSONObject txInfo = getTxInfo(tx);
+//                    if (tx.equals("51058043791e355581ba640169dc1629dc061412dff35bd397590f0d4412e3de")){
+                        System.out.println(tx);
+                        System.out.println(txInfo);
+//                    }
                     if (txInfo != null) {
                         BtcTx btcTx = JSONObject.parseObject(txInfo.toString(), BtcTx.class);
                         List<BtcTx.VoutDTO> vouts = btcTx.getVout();
 
                         for (BtcTx.VoutDTO v : vouts) {
-                            System.out.println(v.toString());
-                            if (v.getScriptpubkeyAddress().equals(addressLock)) {
+                            if (null != v.getScriptpubkeyAddress() && v.getScriptpubkeyAddress().equals(addressLock)) {
                                 synchronized (matchingTransactions) {
                                     matchingTransactions.add(btcTx);
                                 }
@@ -117,7 +122,7 @@ public class BtcUtils3 {
 
     public static void main(String[] args) {
         try {
-            List<BtcTx> result = processTransactionsForBlockHeight("3196184");
+            List<BtcTx> result = processTransactionsForBlockHeight("3395127");
             System.out.println("Matching transactions count: " + result.size());
         } catch (InterruptedException e) {
             System.err.println("Process interrupted: " + e.getMessage());

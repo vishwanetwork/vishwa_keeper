@@ -1,0 +1,49 @@
+#
+spring:
+  profiles:
+    include: mybatis
+  datasource:
+    oms.url:
+    oms.username:
+    oms.password:
+    oms.type: com.alibaba.druid.pool.DruidDataSource
+    #
+    oms.initialSize: 5
+    oms.minIdle: 5
+    oms.maxActive: 20
+    oms.maxWait: 60000
+    oms.timeBetweenEvictionRunsMillis: 60000
+    oms.minEvictableIdleTimeMillis: 300000
+    oms.validationQuery: SELECT 1 FROM DUAL
+    oms.testWhileIdle: true
+    oms.testOnBorrow: false
+    oms.testOnReturn: false
+    oms.poolPreparedStatements: true
+    #   filters，sql，'wall'
+    oms.filters: stat,wall
+    #    ,log4j
+    oms.maxPoolPreparedStatementPerConnectionSize: 20
+    oms.useGlobalDataSourceStat: true
+    oms.connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  redis:
+    host: 13.125.202.15
+    port: 6379
+    password: QWERasdf123456
+    database: 9
+
+app:
+  web3j:
+    address:
+    chainId: 19330
+
+    tdfAddress: "0x917B60d29C78E6Ec5694480851dc646d72C4ccB3"
+    tdfBlock: "tdfBlock"
+    monitorAddress: "0xB9093CDae95b36d293999FF7Bf43259957aD3876"
+    keyStorePath:
+  taskConfig:
+    dividend: 1
+    cashout: 1
+    cashoutEnd: 1
+    transaction: 1
+    price: 1
+    config: 1

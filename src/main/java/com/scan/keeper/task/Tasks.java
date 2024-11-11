@@ -1,5 +1,6 @@
 package com.scan.keeper.task;
 
+import com.scan.keeper.utils.BtcHTLCScan2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -19,7 +20,7 @@ public class Tasks {
     @Async
     @Scheduled(cron = "0/20 * * * * ?")
     public void monitorTransaction() {
-
+        BtcHTLCScan2.doScan();
     }
 
 }

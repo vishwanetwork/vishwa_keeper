@@ -27,7 +27,7 @@ public class BtcHTLCScan {
 
     // OkHttpClient for making requests with connection pooling and timeouts
     private static OkHttpClient client = new OkHttpClient.Builder()
-            .connectionPool(new ConnectionPool(20, 5, TimeUnit.MINUTES))
+            .connectionPool(new ConnectionPool(100, 5, TimeUnit.MINUTES))
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .build();
@@ -60,10 +60,14 @@ public class BtcHTLCScan {
         Request request = new Request.Builder().url(txInfo + tx).build();
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                return JSONObject.parseObject(response.body().string());
+                String responseBody = response.body().string();  // 将响应内容读取到字符串变量中
+                System.out.println(tx );     // 打印实际响应内容
+                return JSONObject.parseObject(responseBody);
             }
         } catch (Exception e) {
             System.err.println("Error fetching transaction: " + e.getMessage());
+        }finally {
+            System.out.println("Finished processing block " + blockHash);
         }
         return null;
     }
@@ -82,8 +86,8 @@ public class BtcHTLCScan {
 
         // Create an ExecutorService for handling multiple transactions concurrently
         ExecutorService executorService = new ThreadPoolExecutor(
-                20, // core threads
-                50, // max threads
+                10, // core threads
+                20, // max threads
                 1, TimeUnit.MINUTES, // idle timeout
                 new LinkedBlockingQueue<>()); // queue for task submission
 
@@ -105,6 +109,7 @@ public class BtcHTLCScan {
                         for (BtcTx.VoutDTO v : vouts) {
                             if (v.getScriptpubkeyAddress() != null &&
                                     v.getScriptpubkeyAddress().equals(addressLock)) {
+                                System.out.println("Matching transaction found: " + txInfo);
                                 synchronized (matchingTransactions) {
                                     matchingTransactions.add(btcTx);
                                 }
@@ -139,17 +144,27 @@ public class BtcHTLCScan {
         return matchingTransactions;
     }
 
+
+    public static void doScan(Integer height) throws InterruptedException {
+        List<BtcTx> result = processTransactionsForBlockHeight(height.toString());
+        for (BtcTx tx : result){
+        }
+    }
+
+
     /**
      * Main method to test the transaction processing.
      * @param args Command-line arguments (not used).
      */
-    public static void main(String[] args) {
-        try {
-            // Fetch and process transactions for a specific block height
-            List<BtcTx> result = processTransactionsForBlockHeight("3196558");
-            System.out.println("Matching transactions count: " + result.size());
-        } catch (InterruptedException e) {
-            System.err.println("Process interrupted: " + e.getMessage());
-        }
+    public static void main(String[] args) throws InterruptedException {
+//        try {
+//            // Fetch and process transactions for a specific block height
+//            List<BtcTx> result = processTransactionsForBlockHeight("3196558");
+//            System.out.println("Matching transactions count: " + result.size());
+//        } catch (InterruptedException e) {
+//            System.err.println("Process interrupted: " + e.getMessage());
+//        }
+
+        doScan(3395127);
     }
 }
